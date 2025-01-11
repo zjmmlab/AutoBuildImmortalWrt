@@ -4,9 +4,9 @@
 uci set firewall.@zone[1].input='ACCEPT'
 
 # 设置主机名映射，解决安卓原生 TV 无法联网的问题
-uci add dhcp domain
-uci set "dhcp.@domain[-1].name=time.android.com"
-uci set "dhcp.@domain[-1].ip=203.107.6.88"
+# uci add dhcp domain
+# uci set "dhcp.@domain[-1].name=time.android.com"
+# uci set "dhcp.@domain[-1].ip=203.107.6.88"
 
 
 # 根据网卡数量配置网络
@@ -21,9 +21,10 @@ done
 
 # 网络设置
 if [ "$count" -eq 1 ]; then
-  uci set network.lan.proto='dhcp'
+  uci set network.lan.proto='static'
+  uci set network.lan.ipaddr='192.168.1.101'
 elif [ "$count" -gt 1 ]; then
-  uci set network.lan.ipaddr='192.168.100.1'
+  uci set network.lan.ipaddr='dhcp'
 fi
 
 # 设置所有网口可访问网页终端
@@ -35,7 +36,7 @@ uci commit
 
 # 设置编译作者信息
 FILE_PATH="/etc/openwrt_release"
-NEW_DESCRIPTION="Compiled by wukongdaily"
+NEW_DESCRIPTION="Compiled by zjmmlab"
 sed -i "s/DISTRIB_DESCRIPTION='[^']*'/DISTRIB_DESCRIPTION='$NEW_DESCRIPTION'/" "$FILE_PATH"
 
 exit 0
